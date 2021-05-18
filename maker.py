@@ -3,9 +3,8 @@ from sys import argv
 from os import getcwd, rename
 from pathlib import Path
 from shutil import copy
-import shlex
 
-VALID_CHOICES = ["default", "python"]
+VALID_CHOICES = ["python", "default"]
 TEMPLATE_PATH = Path(Path(__file__).parent).joinpath("templates")
 questions = [
     {
@@ -36,7 +35,8 @@ def build_gitignore(_language):
 if __name__ == "__main__":
     if len(argv) == 1:
         responses = prompt(questions)
-        build_gitignore(**responses)
+        if responses.get('_language'):
+            build_gitignore(**responses)
     else:
         user_choice = " ".join(argv[1:]).strip().lower()
         if user_choice in VALID_CHOICES:
